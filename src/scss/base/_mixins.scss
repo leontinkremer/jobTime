@@ -1,0 +1,30 @@
+/**
+ * Helper mixins
+*/
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+@mixin m-border-radius-xs {
+  border-radius: $v-border-sm;
+}
+
+// Animations
+@mixin m-transition-all {
+  &-faster {
+    transition: $transition-faster;
+  }
+}
+
+// Media queries
+
+// Text selection
+
+//Placeholders
+//Usage:
+//@include placeholder;
