@@ -11,6 +11,17 @@
 .primary {
   color: $soft-neutral-color-0;
   background: $primary-color-regular;
+
+  &:hover,
+  &:active {
+    background-color: $primary-color-dark;
+  }
+
+  &:disabled {
+    background-color: $soft-neutral-color-100;
+    color: $soft-neutral-color-400;
+    border: 1px solid $soft-neutral-color-100;
+  }
 }
 
 .secondary {
