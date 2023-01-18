@@ -1,10 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// built-in modules
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { HashLink as Link } from "react-router-hash-link";
+
+// components
 import Button from "../Button";
+
+// custom modules
 import { NavbarConfig } from "./NavbarConfig";
+import { clearLocalStorage } from "../../../services/localStorage.service";
+
+// custom hooks
+import { useAuth } from "../../../hooks/useAuth";
+
+// styles
 import style from "./_layout.module.scss";
 
-const Navbar = ({ loggedIn }) => {
+const Navbar = () => {
   const {
     nav,
     navInput,
@@ -16,40 +28,76 @@ const Navbar = ({ loggedIn }) => {
     navLinkActive,
   } = style;
 
+  const history = useHistory();
+  const { isLoading, currentUser, logOut } = useAuth();
+  const [isNavOpened, setNavOpened] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false);
+
+  const handleCloseMobileNavbar = () => {
+    setNavOpened(false);
+    console.log("isNavOpened", isNavOpened);
+  };
+
+  const toggleMobileNavbar = () => {
+    setNavOpened((prevState) => !prevState);
+  };
+
+  useEffect(() => {
+    console.log("isNavOpened", isNavOpened);
+  }, [isNavOpened]);
+
   return (
     <>
       <nav className={nav} id="nav">
-        <input className={navInput} type="checkbox" id="check" />
+        <input
+          className={navInput}
+          type="checkbox"
+          id="check"
+          checked={isNavOpened}
+          onChange={() => toggleMobileNavbar()}
+        />
+
         <label htmlFor="check" className={navCheckButton}>
           <i className="fas fa-bars"></i>
         </label>
-        <Link to="/">
-          <label className={navLogo}>jobTime</label>
+        <Link onClick={() => handleCloseMobileNavbar()} to="/">
+          <label className={navLogo}>smartClipboard</label>
         </Link>
 
         <ul className={navList}>
-          {!loggedIn ? (
-            <>
-              <li className={navListItem}>
-                <a href="#nav">Home</a>
-              </li>
-              <li className={navListItem}>
-                <a href="#features">Features</a>
-              </li>
-            </>
-          ) : (
+          {!isLoading && currentUser !== undefined ? (
             NavbarConfig.map(({ id, name, path }) => (
-              <Link key={id} to={path}>
+              <Link
+                onClick={() => handleCloseMobileNavbar()}
+                key={id}
+                to={path}
+              >
                 <li className={navListItem}>{name}</li>
               </Link>
             ))
+          ) : (
+            <>
+              <Link onClick={() => handleCloseMobileNavbar()} to="/#nav">
+                <li className={navListItem}>Home</li>
+              </Link>
+              <Link onClick={() => handleCloseMobileNavbar()} to="/#features">
+                <li className={navListItem}>Features</li>
+              </Link>
+            </>
           )}
-
-          <Link to="/login">
-            <Button actionType="secondary" marginRight="true">
-              Anmelden
-            </Button>
-          </Link>
+          {!isLoading && currentUser ? (
+            <Link onClick={() => handleCloseMobileNavbar()} to="/logout">
+              <Button actionType="secondary" marginRight="true">
+                Abmelden
+              </Button>
+            </Link>
+          ) : (
+            <Link onClick={() => handleCloseMobileNavbar()} to="/login">
+              <Button actionType="primary" marginRight="true">
+                Anmelden
+              </Button>
+            </Link>
+          )}
         </ul>
       </nav>
     </>

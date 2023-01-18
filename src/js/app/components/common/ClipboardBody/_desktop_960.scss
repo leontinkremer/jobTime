@@ -1,0 +1,12 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-lg) {
+  .clipboard {
+    max-width: 70rem;
+    padding: 2rem;
+  }
+
+  .clipboardItem {
+    // margin-bottom: 1rem;
+  }
+}

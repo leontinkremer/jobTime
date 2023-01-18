@@ -1,14 +1,21 @@
 {
   "name": "2022-10-15-webpack-react-sass",
+  "quokka": {
+    "babel": true
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.25.0",
     "core-js": "^3.25.5",
+    "dotenv": "^16.0.3",
     "prop-types": "^15.8.1",
     "query-string": "^7.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
+    "react-router-hash-link": "^2.4.3",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.6.0",
     "yup": "^0.32.11"
   },
@@ -47,11 +54,15 @@
     "babel-loader": "^8.2.5",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^6.7.1",
+    "dotenv": "^16.0.3",
+    "dotenv-webpack": "^8.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "node-sass": "^7.0.3",
+    "react-error-overlay": "^6.0.9",
+    "react-scripts": "^5.0.1",
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
     "svg-inline-loader": "^0.8.2",

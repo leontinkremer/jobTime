@@ -1,0 +1,39 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-lg) and (max-width: $breakpoint-xl) {
+  .clipboardPage {
+    background-color: yellow;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    gap: 2rem;
+
+    padding: 2rem;
+  }
+
+  .asideLeft {
+    background-color: rgb(213, 0, 209);
+    width: 70rem;
+    padding: 0 2rem;
+    margin: 0 auto;
+    // flex: 1 1 auto;
+  }
+
+  .mainArea {
+    background-color: red;
+    // flex: 1 1 auto;
+    // width: 100%;
+  }
+
+  .asideRight {
+    // flex: 1 1 auto;
+    width: 70rem;
+    padding: 0 2rem;
+    margin: 0 auto;
+    background-color: chocolate;
+  }
+}

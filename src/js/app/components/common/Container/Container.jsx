@@ -3,22 +3,25 @@ import style from "./_layout.module.scss";
 import PropTypes from "prop-types";
 
 const Container = ({ maxWidth, children }) => {
-  const { container } = style;
+  const { container, containerMaxWidth } = style;
 
   let cumulativeStyles = `${container}`;
 
   if (maxWidth === "true") {
-    cumulativeStyles += ` ${maxWidth}`;
+    cumulativeStyles += ` ${containerMaxWidth}`;
   }
+
+  console.log(cumulativeStyles);
+
   return <div className={cumulativeStyles}> {children} </div>;
 };
 
 Container.propTypes = {
-  maxWidth: PropTypes.oneOf(["true", "false"]),
+  containerMaxWidth: PropTypes.oneOf(["true", "false"]),
 };
 
 Container.defaultProps = {
-  maxWidth: "false",
+  containerMaxWidth: "false",
 };
 
 export default Container;

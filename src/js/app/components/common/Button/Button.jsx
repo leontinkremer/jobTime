@@ -6,6 +6,7 @@ const Button = ({
   type,
   actionType,
   marginRight,
+  marginTop,
   children,
   mobileFullWidth,
   handleClick,
@@ -35,6 +36,9 @@ const Button = ({
       className={cumulativeStyles}
       onClick={handleClick}
       disabled={disabled}
+      style={{
+        marginTop: marginTop,
+      }}
     >
       {children}
     </button>
@@ -44,6 +48,7 @@ const Button = ({
 Button.propTypes = {
   actionType: PropTypes.oneOf(["primary", "secondary"]),
   marginRight: PropTypes.oneOf(["true", "false"]),
+  marginTop: PropTypes.string,
   mobileFullWidth: PropTypes.oneOf(["true", "false"]),
   type: PropTypes.string,
 };
@@ -52,6 +57,7 @@ Button.defaultProps = {
   type: "button",
   actionType: "primary",
   marginRight: "false",
+  marginTop: "0",
   mobileFullWidth: "false",
 };
 

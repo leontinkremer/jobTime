@@ -20,7 +20,7 @@ const Hero = () => {
         <div className={column}>
           <div className={inner}>
             <h1 className={heading}>
-              <span className={headingSpan}>Deine</span> Zeiterfassung
+              <span className={headingSpan}>Deine smarte</span> Zwischenablage
             </h1>
             <p className={paragraph}>Einfach, unkompliziert, sofort.</p>
             <Button>Jetzt kostenlos testen</Button>

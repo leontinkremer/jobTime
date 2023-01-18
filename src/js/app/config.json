@@ -1,0 +1,14 @@
+{
+  "apiEndpoint": "https://jobtime-15f0a-default-rtdb.europe-west1.firebasedatabase.app/",
+  "isFireBase": true,
+  "clipBoardItemColors": {
+    "1": {
+      "heading": "#17A2B8",
+      "body": "#EEFDFF"
+    },
+    "2": {
+      "heading": "#FFC107",
+      "body": "#FFFCE5"
+    }
+  }
+}

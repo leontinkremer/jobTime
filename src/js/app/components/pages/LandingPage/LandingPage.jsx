@@ -5,15 +5,16 @@ import Hero from "../../common/Hero";
 import Features from "../../common/Features";
 import CallToAction from "../../common/CallToAction";
 import Footer from "../../common/Footer/Footer";
+import Container from "../../common/Container";
 
 const LandingPage = () => {
   return (
-    <div className={style.container}>
+    <Container maxWidth="true">
       <Hero />
       <Features />
       <CallToAction />
       <Footer />
-    </div>
+    </Container>
   );
 };
 

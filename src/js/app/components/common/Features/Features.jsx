@@ -27,10 +27,9 @@ const Features = () => {
                 <img className={icon} src={clockIcon} alt="Icon" />
               </div>
               <div className={contentBox}>
-                <h4 className={cardHeading}>Digitale Stempeluhr</h4>
+                <h4 className={cardHeading}>Lorem Ipsum</h4>
                 <p className={cardText}>
-                  Arbeitstag starten, Pausen erfassen, Arbeitstag beenden -
-                  alles in einer App.
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
                 </p>
                 <a className={cardLink} href="#">
                   Jetzt registrieren →
@@ -46,10 +45,9 @@ const Features = () => {
                 <img className={icon} src={clockIcon} alt="Icon" />
               </div>
               <div className={contentBox}>
-                <h4 className={cardHeading}>Digitale Stempeluhr</h4>
+                <h4 className={cardHeading}>Lorem Ipsum</h4>
                 <p className={cardText}>
-                  Arbeitstag starten, Pausen erfassen, Arbeitstag beenden -
-                  alles in einer App.
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
                 </p>
                 <a className={cardLink} href="#">
                   Jetzt registrieren →
@@ -65,10 +63,9 @@ const Features = () => {
                 <img className={icon} src={clockIcon} alt="Icon" />
               </div>
               <div className={contentBox}>
-                <h4 className={cardHeading}>Digitale Stempeluhr</h4>
+                <h4 className={cardHeading}>Lorem Ipsum</h4>
                 <p className={cardText}>
-                  Arbeitstag starten, Pausen erfassen, Arbeitstag beenden -
-                  alles in einer App.
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
                 </p>
                 <a className={cardLink} href="#">
                   Jetzt registrieren →

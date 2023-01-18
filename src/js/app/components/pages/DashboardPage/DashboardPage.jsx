@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
-import withLoaderHOC from "../../../hoc/withLoaderHOC";
+// built-in modules
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
+// hoc's
+
+// styles
 import style from "./_layout.module.scss";
-import Statistics from "../../common/Statistics";
+
+// custom hooks
+import { useAuth } from "../../../hooks/useAuth";
+
+// components
 
 const DashboardPage = () => {
-  const DashboardComponent = withLoaderHOC(Statistics);
-  return (
-    <>
-      <DashboardComponent />
-    </>
-  );
+  return <div>DashboardPage</div>;
 };
 
 export default DashboardPage;

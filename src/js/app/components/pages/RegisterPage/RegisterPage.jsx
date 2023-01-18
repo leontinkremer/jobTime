@@ -1,23 +1,23 @@
+// built-in modules
 import React, { useEffect, useState } from "react";
-import { validator } from "../../../utils/validator";
 import { Link } from "react-router-dom";
-import withLoaderHOC from "../../../hoc/withLoaderHOC";
+import { useHistory } from "react-router-dom";
+
+// custom modules
+import { validator } from "../../../utils/validator";
+
+// styles
 import style from "./_layout.module.scss";
-import Statistics from "../../common/Statistics";
+
+// custom hooks
+import { useAuth } from "../../../hooks/useAuth";
+
+// components
 import Section from "../../common/Section";
 import Container from "../../common/Container";
 import Row from "../../common/Row";
 import InputField from "../../common/InputField";
 import Button from "../../common/Button";
-
-// done: import validator
-// done: customize validator configuration
-// done: connect email field with onChange
-// done: connect password field with onChange
-// task: import useAuth hook
-// task: implement validation
-// task: implement registration
-// task: implement login
 
 const RegisterPage = () => {
   const {
@@ -33,6 +33,8 @@ const RegisterPage = () => {
     loginFormLink,
   } = style;
 
+  const history = useHistory();
+  const { signUp } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -76,6 +78,7 @@ const RegisterPage = () => {
   useEffect(() => {
     validate();
   }, [data]);
+
   const validate = () => {
     const errors = validator(data, validatorConfig);
     setErrors(errors);
@@ -88,27 +91,15 @@ const RegisterPage = () => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
+
+    try {
+      await signUp(data);
+      history.push("/login");
+    } catch (error) {
+      setErrors(error);
+      console.log(error);
+    }
   };
-
-  /*
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("test");
-    console.log(e);
-
-    const isValid = validate();
-    if (!isValid) return;
-
-    // try {
-    //     await signUp(newData);
-    //     history.push("/");
-    // } catch (error) {
-    //     setErrors(error);
-    //     console.log(error);
-    // }
-  };
-  */
 
   return (
     <Section>
@@ -137,19 +128,6 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   error={errors.password}
                 />
-                {/* 
-                <label>
-                  Name:
-                  <input type="text" name="name" />
-                </label>
-                <input type="submit" value="Submit" /> */}
-
-                {/* <input
-                  className={submitButton}
-                  disabled={false}
-                  type="submit"
-                  value="Submit"
-                /> */}
                 <div className={loginFormButtonsSection}>
                   <Button
                     type="submit"

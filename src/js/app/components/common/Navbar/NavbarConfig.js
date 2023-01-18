@@ -1,5 +1,6 @@
+import { PATH_DASHBOARD, PATH_CLIPBOARD } from "../../../utils/paths";
+
 export const NavbarConfig = [
-  { id: "DASHBOARD_PAGE", name: "Dashboard", path: "dashboard" },
-  { id: "TIMER_PAGE", name: "Stoppuhr", path: "timer" },
-  { id: "ENTRIES_PAGE", name: "Zeiteinträge", path: "entries" },
+  { id: "DASHBOARD_PAGE", name: "Dashboard", path: PATH_DASHBOARD },
+  { id: "CLIPBOARD_PAGE", name: "Zwischenablage", path: PATH_CLIPBOARD },
 ];
