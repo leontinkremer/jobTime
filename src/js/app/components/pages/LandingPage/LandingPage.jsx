@@ -8,6 +8,7 @@ import Footer from "../../common/Footer/Footer";
 import Container from "../../common/Container";
 
 const LandingPage = () => {
+  console.log("Ich war kurz auf der Startseite");
   return (
     <Container maxWidth="true">
       <Hero />

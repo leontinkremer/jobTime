@@ -1,23 +1,20 @@
 // built-in modules
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-
-// hoc's
-
-// styles
-import style from "./_layout.module.scss";
-
-const { clipboardPage, asideLeft, mainArea, asideRight } = style;
-
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
+import React from "react";
+import { useSelector } from "react-redux";
+import { getDataStatus } from "../../../store/users";
 
 // components
 import ClipboardArea from "../../common/ClipboardArea/ClipboardArea";
-import SecondaryMenue from "../../secondaryMenue/SecondaryMenue/SecondaryMenue";
-// import SecondaryMenue from "../../secondaryMenue/SecondaryMenue";
+import Loader from "../../common/Loader";
+import SecondaryMenue from "../../common/SecondaryMenue/SecondaryMenue";
+
+// styles
+import style from "./_layout.module.scss";
+const { clipboardPage, asideLeft, mainArea, asideRight } = style;
 
 const ClipboardPage = () => {
+  const dataLoaded = useSelector(getDataStatus());
+  if (!dataLoaded) return <Loader />;
   return (
     <div className={clipboardPage}>
       <aside className={asideLeft}>

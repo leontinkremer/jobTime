@@ -1,0 +1,51 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-xl) {
+  .clipboard {
+    max-width: 70rem;
+    padding: 2rem;
+  }
+
+  .clipboardItem {
+    // margin-bottom: 1rem;
+  }
+
+  .itemBodyContentSection {
+    // background-color: red;
+  }
+
+  .itemBodyContent {
+    background-color: transparent;
+    width: 100vw;
+    max-width: 100%;
+    border: none;
+    font-family: $font-weight-regular;
+    font-size: $font-size-xs;
+    line-height: $font-size-lg;
+    min-height: 5rem;
+    overflow-y: hidden;
+    resize: none;
+  }
+
+  .itemBodyContent:focus {
+    height: 10rem;
+  }
+
+  .itemBodyHeading {
+    background-color: transparent;
+    // background-color: red;
+    width: 100vw;
+    max-width: 100%;
+    border: none;
+    font-family: $font-weight-regular;
+    font-size: $font-size-xs;
+    line-height: $font-size-lg;
+    // min-height: 5rem;
+    overflow-y: hidden;
+    resize: none;
+  }
+
+  .itemBodyHeading:focus {
+    // height: 10rem;
+  }
+}

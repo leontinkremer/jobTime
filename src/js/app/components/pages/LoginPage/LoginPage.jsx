@@ -1,16 +1,12 @@
 // built-in modules
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 // custom modules
 import { validator } from "../../../utils/validator";
 
 // styles
 import style from "./_layout.module.scss";
-
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
 
 // components
 import Section from "../../common/Section";
@@ -19,6 +15,8 @@ import Row from "../../common/Row";
 import InputField from "../../common/InputField";
 import Button from "../../common/Button";
 import { PATH_CLIPBOARD } from "../../../utils/paths";
+import { useDispatch } from "react-redux";
+import { login } from "../../../store/users";
 
 const LoginPage = () => {
   const {
@@ -27,16 +25,12 @@ const LoginPage = () => {
     loginFormHeader,
     formHeaderText,
     loginForm,
-    inputField,
     loginFormButtonsSection,
     loginFormFooter,
     loginFormLink,
-    submitButton,
   } = style;
 
-  const history = useHistory();
-  const { isLoading, currentUser } = useAuth();
-  const { signIn } = useAuth();
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -79,23 +73,14 @@ const LoginPage = () => {
 
   const isValid = Object.keys(errors).length === 0;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    // console.log("data", data);
-    history.push(PATH_CLIPBOARD);
+    const redirect = PATH_CLIPBOARD;
 
-    try {
-      await signIn(data);
-      history.push(PATH_CLIPBOARD);
-    } catch (error) {
-      setErrors(error);
-      console.log(error);
-    }
+    dispatch(login({ payload: data, redirect }));
   };
-
-  // subtask: checked
 
   return (
     <Section>

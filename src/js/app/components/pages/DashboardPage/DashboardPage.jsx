@@ -1,14 +1,10 @@
 // built-in modules
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 
 // hoc's
 
 // styles
 import style from "./_layout.module.scss";
-
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
 
 // components
 

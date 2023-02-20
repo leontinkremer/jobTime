@@ -1,0 +1,25 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-xl) {
+  .menueItem {
+    box-sizing: border-box;
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 10px;
+    width: 100%;
+
+    border: $v-border-xxs solid $secondary-color-dark;
+    border-radius: $v-border-sm;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $secondary-color-lighter;
+    }
+  }
+}

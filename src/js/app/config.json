@@ -10,5 +10,12 @@
       "heading": "#FFC107",
       "body": "#FFFCE5"
     }
+  },
+  "filterVariables": {
+    "ALL_NOTES": "allNotes",
+    "ARCHIVED_NOTES": "archivedNotes",
+    "CURRENT_NOTES": "currentNotes",
+    "FAVORED_NOTES": "favorites",
+    "OLD_NOTES": "oldNotes"
   }
 }

@@ -11,8 +11,6 @@ const Container = ({ maxWidth, children }) => {
     cumulativeStyles += ` ${containerMaxWidth}`;
   }
 
-  console.log(cumulativeStyles);
-
   return <div className={cumulativeStyles}> {children} </div>;
 };
 

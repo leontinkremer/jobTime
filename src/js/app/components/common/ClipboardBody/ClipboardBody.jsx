@@ -1,147 +1,113 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import style from "./_layout.module.scss";
 import PropTypes from "prop-types";
-import starOutlineLight from "../../../../../images/icon_star_outline_light.png";
-import starSolidLight from "../../../../../images/icon_star_solid_light.png";
-import counterOutlineLight from "../../../../../images/icon_counter_outline_light.png";
-import countingOutlineLight from "../../../../../images/icon_counting_outline_light.png";
-import CalendarOutlineLight from "../../../../../images/icon_calendar_outline_light.png";
-import BinOutlineLight from "../../../../../images/icon_bin_outline_light.png";
-import clipBoardItemColors from "../../../config.json";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getIsLoggedIn,
+  getIsSynced,
+  getUsers,
+  getUsersNotes,
+  loadUsersList,
+  updateNoteLocally,
+  updateUser,
+  updateUserLocally,
+  updateUserLocallyNew,
+  updateUserNoteFavoriteSettings,
+} from "../../../store/users";
+import { paginate } from "../../../utils/paginate";
+import Pagination from "../Pagination";
+import filterNotes from "../../../utils/filterNotes";
+import { getFilterBy } from "../../../store/notes";
+import Note from "../Note";
 
 const ClipboardBody = () => {
-  const {
-    clipboardBody,
-    clipboardItem,
-    itemHeader,
-    itemHeaderColumnLeft,
-    itemBody,
-    itemBodyHeadingSection,
-    itemBodyHeadingSymbol,
-    itemBodyHeading,
-    itemBodyContentSection,
-    itemBodyContent,
-    iconBox,
-    icon,
-    statusIndicator,
-    indicatorText,
-    indicatorTextSmall,
-    indicatorTextCalendar,
-    indicatorTextDay,
-    indicatorTextMonth,
-    itemHeaderColumnRight,
-    itemAction,
-  } = style;
+  const { clipboardBody } = style;
+  const notes = useSelector(getUsersNotes());
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(getIsLoggedIn());
+  const isSynced = useSelector(getIsSynced());
 
-  const items = [
-    {
-      id: 1,
-      symbol: "🥇",
-      color_schema: 1,
-      heading: "JavaScript (kurz JS) ist eine Skriptsprache",
-      content:
-        "JavaScript (kurz JS) ist eine Skriptsprache, die ursprünglich 1995 von Netscape für dynamisches HTML in Webbrowsern entwickelt wurde, um Benutzerinteraktionen auszuwerten, Inhalte zu verändern, nachzuladen oder zu generieren und so die Möglichkeiten von HTML zu erweitern.[2] Heute wird JavaScript auch außerhalb von Browsern angewendet, etwa auf Servern und in Microcontrollern.",
-      favorite: true,
-      created_at: 1670798501,
-      updated_at: 1673736101,
-      archived_at: "",
-    },
-    {
-      id: 2,
-      symbol: "🏠",
-      color_schema: 2,
-      heading: "Accessing Object Values",
-      content: "You can access object values by using dot (.) notation",
-      favorite: false,
-      created_at: 1670798501,
-      updated_at: 1673736101,
-      archived_at: 1673736101,
-    },
-  ];
+  // subtask: update user when changed notes.
+  // console.log("User:", user);
+  // console.log("Notes:", notes);
+  const [currentPage, setCurrentPage] = useState(1);
+  const filterBy = useSelector(getFilterBy());
+  // console.log("filterBy", filterBy);
+  const pageSize = 6;
 
-  const objItemColors = clipBoardItemColors.clipBoardItemColors;
-  console.log(objItemColors[1].heading); //
+  const filteredNotes = filterNotes(filterBy, notes);
+
+  let notesCrop = paginate(filteredNotes, currentPage, pageSize);
+  // console.log("notesCrop", notesCrop);
+
+  // useEffect(() => {
+  //   if (user.isSynced === false) {
+  //     console.log("Sync data with backend");
+  //     console.log("user", user);
+  //     dispatch(updateUser(user));
+  //   }
+  // }, [user]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterBy]);
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     dispatch(loadUsersList());
+  //   }
+  // }, [isLoggedIn]);
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
+  const handleFavoriteChangeWithModifiedProp = (note) => {
+    // console.log("user", user);
+    // console.log("note", note);
+    // console.log("=======");
+    const modifiedNote = {
+      ...note,
+      favorite: note.favorite === false ? true : false,
+    };
+    console.log("modifiedNote", modifiedNote);
+    dispatch(updateNoteLocally(modifiedNote));
+  };
+
+  // useEffect(() => {
+  //   if (user.isSynced === false) {
+  //     console.log("Sync data with backend");
+
+  //     dispatch(updateUser(user));
+  //   }
+  //   // console.log("timestamp", timestamp);
+  //   // console.log("lastSync", lastSync);
+  //   // console.log("diff in ms", timestamp - lastSync);
+  // });
+
+  // console.log("filteredNotes", filteredNotes);
+  const count = filteredNotes.length;
+  // console.log("count", count);
 
   return (
     <div className={clipboardBody}>
-      {items.map((item) => (
-        <div key={item.id} className={clipboardItem}>
-          <div
-            key={item.id}
-            className={itemHeader}
-            style={{
-              backgroundColor: objItemColors[item.color_schema].heading,
-            }}
-          >
-            <div key={item.id} className={itemHeaderColumnLeft}>
-              <div key={item} className={statusIndicator}>
-                <div key={item} className={iconBox}>
-                  <img className={icon} src={counterOutlineLight} alt="Icon" />
-                </div>
-                <span className={indicatorText}>Nie</span>
-              </div>
-              <div key={item} className={statusIndicator}>
-                <div key={item} className={iconBox}>
-                  <img className={icon} src={countingOutlineLight} alt="Icon" />
-                </div>
-                <span className={indicatorText}>
-                  0<span className={indicatorTextSmall}>x</span>
-                </span>
-              </div>
-              <div key={item} className={statusIndicator}>
-                <div key={item} className={iconBox}>
-                  <img className={icon} src={CalendarOutlineLight} alt="Icon" />
-                </div>
-                <div className={indicatorTextCalendar}>
-                  <p className={indicatorTextDay}>24</p>
-                  <p className={indicatorTextMonth}>OKT</p>
-                </div>
-              </div>
-            </div>
-            <div className={itemHeaderColumnRight}>
-              <div className={itemAction}>
-                <div key={item} className={iconBox}>
-                  <img
-                    className={icon}
-                    src={
-                      item.favorite === true ? starSolidLight : starOutlineLight
-                    }
-                    alt="Icon"
-                  />
-                </div>
-              </div>
-              <div className={itemAction}>
-                <div key={item} className={iconBox}>
-                  <img className={icon} src={BinOutlineLight} alt="Icon" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className={itemBody}
-            style={{
-              backgroundColor: objItemColors[item.color_schema].body,
-            }}
-          >
-            <div className={itemBodyHeadingSection}>
-              <div className={itemBodyHeadingSymbol}>{item.symbol}</div>
-              <div className={itemBodyHeading}>{item.heading}</div>
-            </div>
-            <div className={itemBodyContentSection}>
-              <div className={itemBodyContent}>{item.content}</div>
-            </div>
-          </div>
-        </div>
+      {notesCrop.map((item) => (
+        <Note
+          item={item}
+          key={item.id}
+          handleFavoriteChangeWithModifiedProp={
+            handleFavoriteChangeWithModifiedProp
+          }
+        />
       ))}
+      <Pagination
+        itemsCount={count}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
 
 export default ClipboardBody;
-
-{
-  /* <div className={clipboardItem}>
-  <div className={itemHeader}>Nie</div>
-  <div className={itemBody}>Lorem ipsum</div>
-</div>; */
-}

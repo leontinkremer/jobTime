@@ -9,9 +9,6 @@ import style from "./_layout.module.scss";
 
 const { clipboardPage, asideLeft, mainArea, asideRight } = style;
 
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
-
 // components
 import ClipboardArea from "../ClipboardArea/ClipboardArea";
 

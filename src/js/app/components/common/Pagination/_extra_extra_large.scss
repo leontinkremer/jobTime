@@ -1,0 +1,27 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-xl) {
+  .paginationSection {
+    // background-color: yellow;
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    margin-top: 2rem;
+  }
+  .paginationBox {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 0.5rem;
+  }
+}

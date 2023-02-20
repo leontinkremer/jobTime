@@ -1,6 +1,5 @@
 // built-in modules
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 
 // components
@@ -8,30 +7,26 @@ import Button from "../Button";
 
 // custom modules
 import { NavbarConfig } from "./NavbarConfig";
-import { clearLocalStorage } from "../../../services/localStorage.service";
-
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
 
 // styles
 import style from "./_layout.module.scss";
+import { useSelector } from "react-redux";
+import { getCurrentUserId, getIsLoggedIn } from "../../../store/users";
+import { PATH_CLIPBOARD } from "../../../utils/paths";
 
-const Navbar = () => {
-  const {
-    nav,
-    navInput,
-    navCheckButton,
-    navLogo,
-    navList,
-    navListItem,
-    navLink,
-    navLinkActive,
-  } = style;
-
-  const history = useHistory();
-  const { isLoading, currentUser, logOut } = useAuth();
+const Navbar = ({ isLoggedIn }) => {
+  const { nav, navInput, navCheckButton, navLogo, navList, navListItem } =
+    style;
   const [isNavOpened, setNavOpened] = useState(false);
-  const [loggedOut, setLoggedOut] = useState(false);
+  const [showProtectedItems, setShowProtectedItems] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn ? setShowProtectedItems(true) : setShowProtectedItems(false);
+  }, [isLoggedIn]);
+
+  // useEffect(() => {
+  //   console.log("isLoggedIn:", isLoggedIn);
+  // });
 
   const handleCloseMobileNavbar = () => {
     setNavOpened(false);
@@ -41,10 +36,6 @@ const Navbar = () => {
   const toggleMobileNavbar = () => {
     setNavOpened((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    console.log("isNavOpened", isNavOpened);
-  }, [isNavOpened]);
 
   return (
     <>
@@ -65,7 +56,7 @@ const Navbar = () => {
         </Link>
 
         <ul className={navList}>
-          {!isLoading && currentUser !== undefined ? (
+          {isLoggedIn ? (
             NavbarConfig.map(({ id, name, path }) => (
               <Link
                 onClick={() => handleCloseMobileNavbar()}
@@ -85,14 +76,19 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          {!isLoading && currentUser ? (
+          {isLoggedIn ? (
             <Link onClick={() => handleCloseMobileNavbar()} to="/logout">
               <Button actionType="secondary" marginRight="true">
                 Abmelden
               </Button>
             </Link>
           ) : (
-            <Link onClick={() => handleCloseMobileNavbar()} to="/login">
+            <Link
+              onClick={() => {
+                handleCloseMobileNavbar();
+              }}
+              to="/login"
+            >
               <Button actionType="primary" marginRight="true">
                 Anmelden
               </Button>

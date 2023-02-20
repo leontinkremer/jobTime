@@ -6,7 +6,6 @@ import localStorageService, {
   setToken,
 } from "../services/localStorage.service";
 import Loader from "../components/common/Loader";
-import { useHistory } from "react-router-dom";
 
 export const httpAuth = axios.create({
   baseURL: "https://identitytoolkit.googleapis.com/v1/",
@@ -28,10 +27,6 @@ const AuthProvider = ({ children }) => {
   function logOut() {
     localStorageService.removeAuthData();
     setUser(null);
-  }
-
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   async function signUp({ email, password, ...rest }) {

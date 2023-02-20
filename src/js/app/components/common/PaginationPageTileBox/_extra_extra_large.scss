@@ -1,0 +1,35 @@
+/* CSS-Anweisungen für Desktop */
+
+@media only screen and (min-width: $breakpoint-xl) {
+  .pageTileBox {
+    box-sizing: border-box;
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+
+    border: $v-border-xxs solid $secondary-color-dark;
+    border-radius: $v-border-xs;
+    width: 35px;
+    height: 35px;
+  }
+
+  .pageTileBoxActive {
+    background-color: $secondary-color-dark;
+  }
+
+  .pageTile {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    color: $secondary-color-regular;
+  }
+
+  .pageTileActive {
+    color: $soft-neutral-color-0;
+  }
+}

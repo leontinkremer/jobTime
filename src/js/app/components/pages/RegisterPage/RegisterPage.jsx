@@ -1,7 +1,6 @@
 // built-in modules
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 // custom modules
 import { validator } from "../../../utils/validator";
@@ -9,15 +8,14 @@ import { validator } from "../../../utils/validator";
 // styles
 import style from "./_layout.module.scss";
 
-// custom hooks
-import { useAuth } from "../../../hooks/useAuth";
-
 // components
 import Section from "../../common/Section";
 import Container from "../../common/Container";
 import Row from "../../common/Row";
 import InputField from "../../common/InputField";
 import Button from "../../common/Button";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../../store/users";
 
 const RegisterPage = () => {
   const {
@@ -26,20 +24,18 @@ const RegisterPage = () => {
     loginFormHeader,
     formHeaderText,
     loginForm,
-    inputField,
     loginFormButtonsSection,
     loginFormFooter,
-    submitButton,
     loginFormLink,
   } = style;
 
-  const history = useHistory();
-  const { signUp } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
 
   const validatorConfig = {
     email: {
@@ -75,15 +71,15 @@ const RegisterPage = () => {
     }));
   };
 
-  useEffect(() => {
-    validate();
-  }, [data]);
-
   const validate = () => {
     const errors = validator(data, validatorConfig);
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
+
+  useEffect(() => {
+    validate();
+  }, [data]);
 
   const isValid = Object.keys(errors).length === 0;
 
@@ -91,14 +87,7 @@ const RegisterPage = () => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-
-    try {
-      await signUp(data);
-      history.push("/login");
-    } catch (error) {
-      setErrors(error);
-      console.log(error);
-    }
+    dispatch(signUp(data));
   };
 
   return (
