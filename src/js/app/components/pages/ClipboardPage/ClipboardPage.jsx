@@ -15,6 +15,7 @@ const { clipboardPage, asideLeft, mainArea, asideRight } = style;
 const ClipboardPage = () => {
   const dataLoaded = useSelector(getDataStatus());
   if (!dataLoaded) return <Loader />;
+
   return (
     <div className={clipboardPage}>
       <aside className={asideLeft}>

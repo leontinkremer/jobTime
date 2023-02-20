@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getIsLoggedIn,
   getIsSynced,
+  getSyncDataLoaded,
   getUsers,
   getUsersNotes,
   loadUsersList,
@@ -19,13 +20,16 @@ import Pagination from "../Pagination";
 import filterNotes from "../../../utils/filterNotes";
 import { getFilterBy } from "../../../store/notes";
 import Note from "../Note";
+import getTimestamp from "../../../utils/date.getTimestamp";
 
 const ClipboardBody = () => {
   const { clipboardBody } = style;
-  const notes = useSelector(getUsersNotes());
+  const timestamp = getTimestamp();
+  const user = useSelector(getUsers());
+  const [notes, setNotes] = useState(useSelector(getUsersNotes()));
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(getIsLoggedIn());
   const isSynced = useSelector(getIsSynced());
+  const syncDataLoaded = useSelector(getSyncDataLoaded());
 
   // subtask: update user when changed notes.
   // console.log("User:", user);
@@ -38,6 +42,7 @@ const ClipboardBody = () => {
   const filteredNotes = filterNotes(filterBy, notes);
 
   let notesCrop = paginate(filteredNotes, currentPage, pageSize);
+
   // console.log("notesCrop", notesCrop);
 
   // useEffect(() => {
@@ -47,6 +52,18 @@ const ClipboardBody = () => {
   //     dispatch(updateUser(user));
   //   }
   // }, [user]);
+
+  // useEffect(() => {
+  //   if (!syncDataLoaded) {
+  //     window.location.reload(true);
+  //   }
+  // }, [syncDataLoaded]);
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     dispatch(loadUsersList());
+  //   }
+  // }, [isLoggedIn]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -62,28 +79,144 @@ const ClipboardBody = () => {
     setCurrentPage(pageIndex);
   };
 
-  const handleFavoriteChangeWithModifiedProp = (note) => {
-    // console.log("user", user);
-    // console.log("note", note);
+  const handleFavoriteGlobalChange = (note) => {
+    console.log("user", user);
+    console.log("note", note);
+
     // console.log("=======");
     const modifiedNote = {
       ...note,
+      last_view_at: timestamp,
+      updated_at: timestamp,
+      views: note.views + 1,
       favorite: note.favorite === false ? true : false,
     };
     console.log("modifiedNote", modifiedNote);
-    dispatch(updateNoteLocally(modifiedNote));
+
+    const newUserNotesArr = [];
+    user.notes.map((x) => {
+      console.log("x", x);
+      if (x.id !== modifiedNote.id) {
+        newUserNotesArr.push(x);
+      } else {
+        newUserNotesArr.push(modifiedNote);
+      }
+    });
+    console.log("newUserNotesArr", newUserNotesArr);
+
+    const newUserObj = {
+      ...user,
+      notes: newUserNotesArr,
+    };
+
+    console.log("newUserObj", newUserObj);
+
+    dispatch(updateUserLocally(newUserObj));
   };
 
-  // useEffect(() => {
-  //   if (user.isSynced === false) {
-  //     console.log("Sync data with backend");
+  const handleGlobalHide = (note) => {
+    console.log("user", user);
+    console.log("note", note);
 
-  //     dispatch(updateUser(user));
-  //   }
-  //   // console.log("timestamp", timestamp);
-  //   // console.log("lastSync", lastSync);
-  //   // console.log("diff in ms", timestamp - lastSync);
-  // });
+    // console.log("=======");
+    const modifiedNote = {
+      ...note,
+      last_view_at: timestamp,
+      updated_at: timestamp,
+      views: note.views + 1,
+      archived_at: note.archived_at === 0 ? timestamp : 0,
+    };
+    console.log("modifiedNote", modifiedNote);
+
+    const newUserNotesArr = [];
+    user.notes.map((x) => {
+      console.log("x", x);
+      if (x.id !== modifiedNote.id) {
+        newUserNotesArr.push(x);
+      } else {
+        newUserNotesArr.push(modifiedNote);
+      }
+    });
+    console.log("newUserNotesArr", newUserNotesArr);
+
+    const newUserObj = {
+      ...user,
+      notes: newUserNotesArr,
+    };
+
+    console.log("newUserObj", newUserObj);
+
+    dispatch(updateUserLocally(newUserObj));
+  };
+
+  const handleGlobalRemove = (note) => {
+    console.log("user", user);
+    console.log("note", note);
+
+    // console.log("=======");
+    const modifiedNote = {
+      ...note,
+      last_view_at: timestamp,
+      updated_at: timestamp,
+      views: note.views + 1,
+      archived_at: note.archived_at === 0 ? timestamp : 0,
+    };
+    console.log("modifiedNote", modifiedNote);
+
+    const newUserNotesArr = [];
+    user.notes.map((x) => {
+      console.log("x", x);
+      if (x.id !== note.id) {
+        newUserNotesArr.push(x);
+      }
+    });
+    console.log("newUserNotesArr", newUserNotesArr);
+
+    const newUserObj = {
+      ...user,
+      notes: newUserNotesArr,
+    };
+
+    console.log("newUserObj", newUserObj);
+
+    dispatch(updateUserLocally(newUserObj));
+  };
+
+  const handleGlobalTextChange = (note) => {
+    console.log("user", user);
+    console.log("note", note);
+
+    // console.log("=======");
+    const modifiedNote = {
+      ...note,
+      last_view_at: timestamp,
+      updated_at: timestamp,
+      views: note.views + 1,
+      heading: note.heading,
+      content: note.content,
+    };
+    console.log("modifiedNote", modifiedNote);
+
+    const newUserNotesArr = [];
+    user.notes.map((x) => {
+      console.log("x", x);
+      if (x.id !== modifiedNote.id) {
+        newUserNotesArr.push(x);
+      } else {
+        newUserNotesArr.push(modifiedNote);
+      }
+    });
+    console.log("newUserNotesArr", newUserNotesArr);
+
+    const newUserObj = {
+      ...user,
+      notes: newUserNotesArr,
+    };
+
+    console.log("newUserObj", newUserObj);
+
+    dispatch(updateUserLocally(newUserObj));
+  };
 
   // console.log("filteredNotes", filteredNotes);
   const count = filteredNotes.length;
@@ -95,9 +228,10 @@ const ClipboardBody = () => {
         <Note
           item={item}
           key={item.id}
-          handleFavoriteChangeWithModifiedProp={
-            handleFavoriteChangeWithModifiedProp
-          }
+          handleFavoriteGlobalChange={handleFavoriteGlobalChange}
+          handleGlobalHide={handleGlobalHide}
+          handleGlobalRemove={handleGlobalRemove}
+          handleGlobalTextChange={handleGlobalTextChange}
         />
       ))}
       <Pagination

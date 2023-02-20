@@ -1,5 +1,5 @@
 // built-in modules
-import React, { useEffect } from "react";
+import React from "react";
 
 // custom modules
 import clipBoardItemColors from "../../../config.json";
@@ -14,6 +14,8 @@ import countingOutlineLight from "../../../../../images/icon_counting_outline_li
 import CalendarOutlineLight from "../../../../../images/icon_calendar_outline_light.png";
 import BinOutlineLight from "../../../../../images/icon_bin_outline_light.png";
 import BinSolidLight from "../../../../../images/icon_bin_solid_light.png";
+import EyeoffSolidLight from "../../../../../images/icon_eyeoff_solid_light.png";
+import EyeonOutlineLight from "../../../../../images/icon_eyeon_outline_light.png";
 
 // hoc's
 
@@ -55,48 +57,43 @@ const {
 
 // components
 
-const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
+const Note = ({
+  item,
+  handleFavoriteGlobalChange,
+  handleGlobalHide,
+  handleGlobalTextChange,
+  handleGlobalRemove,
+}) => {
   const timestamp = getTimestamp();
   const [note, setNote] = useState(item);
-  const [favorite, setFavorite] = useState(item.favorite);
-  const dispatch = useDispatch();
   const objItemColors = clipBoardItemColors.clipBoardItemColors;
 
-  // useEffect(() => {
-  //   if (user.isSynced === false) {
-  //     dispatch(updateUserLocally(note));
-  //   }
-  // });
-  // working on limit request per second
-
-  const handleClick = () => {
-    // const noteId = e;
-    // console.log("noteId", noteId);
-    // setNote((prevState) => ({
-    //   ...prevState,
-    //   last_view_at: timestamp,
-    //   updated_at: timestamp,
-    //   views: prevState.views + 1,
-    //   favorite: favorite,
-    // }));
-    handleFavoriteChangeWithModifiedProp(note);
+  const handleFavoriteChange = () => {
+    handleFavoriteLocalChange();
+    handleFavoriteGlobalChange(note);
   };
 
-  useEffect(() => {
-    // console.log("favorite", favorite);
-    // console.log("note.favorite", note.favorite);
-    // console.log("=======");
-  }, [note]);
+  const handleHide = () => {
+    handleLocalHide();
+    handleGlobalHide(note);
+  };
 
-  const handleFavoriteChange = (data) => {
+  const handleRemove = () => {
+    handleGlobalRemove(note);
+  };
+
+  const handleTextChange = () => {
+    handleLocalTextChange();
+    handleGlobalTextChange(note);
+  };
+
+  const handleLocalTextChange = () => {
     setNote((prevState) => ({
       ...prevState,
       last_view_at: timestamp,
       updated_at: timestamp,
       views: prevState.views + 1,
-      favorite: prevState.favorite === true ? false : true,
     }));
-    dispatch(updateUserLocally(note));
   };
 
   const handleChange = (data) => {
@@ -110,19 +107,7 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
     }));
   };
 
-  const handleBlur = () => {
-    setNote((prevState) => ({
-      ...prevState,
-      last_view_at: timestamp,
-      updated_at: timestamp,
-      views: prevState.views + 1,
-      // [data.name]: data.value,
-    }));
-    dispatch(updateUserLocally(note));
-  };
-
-  const handleDelete = () => {
-    console.log("click on delete");
+  const handleLocalHide = () => {
     setNote((prevState) => ({
       ...prevState,
       last_view_at: timestamp,
@@ -131,16 +116,17 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
       archived_at: prevState.archived_at === 0 ? timestamp : 0,
       // [data.name]: data.value,
     }));
-    dispatch(updateUserLocally(note));
   };
 
-  // useEffect(() => {
-  //   if (user.isSynced === false) {
-  //     console.log("Sync data with backend");
-  //     console.log("user", user);
-  //     dispatch(updateUser(user));
-  //   }
-  // }, [user]);
+  const handleFavoriteLocalChange = () => {
+    setNote((prevState) => ({
+      ...prevState,
+      last_view_at: timestamp,
+      updated_at: timestamp,
+      views: prevState.views + 1,
+      favorite: prevState.favorite === true ? false : true,
+    }));
+  };
 
   return (
     <div key={note.id} className={clipboardItem}>
@@ -231,9 +217,8 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
           <div
             key={"itemActionFavorite_" + note.id}
             onClick={() => {
-              handleClick(note.id);
+              handleFavoriteChange();
             }}
-            // onClick={handleFavoriteChange}
             className={itemAction}
             id={note.id}
           >
@@ -246,16 +231,31 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
               />
             </div>
           </div>
+          {/* // working on hidden action */}
           <div
-            key={"itemActionArchived_" + note.id}
+            key={"itemActionHidden_" + note.id}
             className={itemAction}
-            onClick={handleDelete}
+            onClick={() => handleHide()}
           >
             <div key={"iconBox_" + note.id} className={iconBox}>
               <img
                 key={"icon_" + note.id}
                 className={icon}
-                src={!!note.archived_at ? BinSolidLight : BinOutlineLight}
+                src={!!note.archived_at ? EyeoffSolidLight : EyeonOutlineLight}
+                alt="Icon"
+              />
+            </div>
+          </div>
+          <div
+            key={"itemActionRemoved_" + note.id}
+            className={itemAction}
+            onClick={() => handleRemove()}
+          >
+            <div key={"iconBox_" + note.id} className={iconBox}>
+              <img
+                key={"icon_" + note.id}
+                className={icon}
+                src={BinOutlineLight}
                 alt="Icon"
               />
             </div>
@@ -287,7 +287,7 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
               name="heading"
               value={note.heading}
               onChange={handleChange}
-              onBlur={handleBlur}
+              onBlur={handleTextChange}
             ></input>
           </div>
         </div>
@@ -302,7 +302,7 @@ const Note = ({ item, handleFavoriteChangeWithModifiedProp }) => {
             name="content"
             value={note.content}
             onChange={handleChange}
-            onBlur={handleBlur}
+            onBlur={handleTextChange}
           ></textarea>
         </div>
       </div>

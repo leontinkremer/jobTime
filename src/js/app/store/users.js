@@ -21,6 +21,7 @@ const initialState = localStorageService.getAccessToken()
       isLoggedIn: true,
       dataLoaded: false,
       isSynced: true,
+      syncedDataLoaded: true, // data after modification
       lastSync: timestamp,
     }
   : {
@@ -32,6 +33,7 @@ const initialState = localStorageService.getAccessToken()
       isLoggedIn: false,
       dataLoaded: false,
       isSynced: true,
+      syncedDataLoaded: true, // data after modification
       lastSync: timestamp,
     };
 
@@ -51,11 +53,13 @@ const usersSlice = createSlice({
     usersRequestFiled: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
+      state.syncedDataLoaded = false;
     },
     authRequestSuccess: (state, action) => {
       // state.auth = action.payload;
       state.auth = action.payload;
       state.isLoggedIn = true;
+      state.syncedDataLoaded = true;
       state.lastSync = timestamp;
     },
     authRequestFailed: (state, action) => {
@@ -101,6 +105,7 @@ const usersSlice = createSlice({
       state.notes[state.notes.findIndex((u) => u.id === action.payload.id)] =
         action.payload;
       state.isSynced = true;
+      state.syncedDataLoaded = false;
       state.lastSync = timestamp;
     },
     authRequested: (state) => {
@@ -240,34 +245,15 @@ export const updateUser = (payload) => async (dispatch) => {
   dispatch(userUpdateRequested(payload));
   try {
     console.log("successfull_1");
-    // next line does not work
     const { content } = await userService.update(payload);
     console.log("successfull_2");
     dispatch(userUpdateSucceeded(content));
     console.log("successfull_3");
+    window.location.reload(true);
   } catch (error) {
     dispatch(userUpdateFailed(error.message));
   }
 };
-
-/*
-
-export const updateUser = (payload) => async (dispatch) => {
-  console.log("payload", payload);
-  dispatch(userUpdateRequested(payload));
-  try {
-    console.log("successfull_1");
-    // next line does not work
-    const { content } = await userService.update(payload);
-    console.log("successfull_2");
-    dispatch(userUpdateSuccessed(content));
-    console.log("successfull_3");
-  } catch (error) {
-    dispatch(userUpdateFailed(error.message));
-  }
-};
-
-*/
 
 export const getUsersList = () => (state) => state.users.notes;
 export const getCurrentUserData = () => (state) => {
@@ -292,4 +278,5 @@ export const getHasStartedLoggingIn = () => (state) =>
 export const getUsers = () => (state) => state.users;
 export const getIsSynced = () => (state) => state.users.isSynced;
 export const getLastSync = () => (state) => state.users.lastSync;
+export const getSyncDataLoaded = () => (state) => state.users.syncedDataLoaded;
 export default usersReducer;
